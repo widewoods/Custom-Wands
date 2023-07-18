@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="CustomWands:jar">
+    <output-path>$USER_HOME$/Desktop/마크 서버/20230708/plugins</output-path>
+    <root id="archive" name="CustomWands.jar">
+      <element id="module-output" name="CustomWands" />
+    </root>
+  </artifact>
+</component>

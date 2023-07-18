@@ -1,0 +1,8 @@
+name: CustomWands
+version: '${project.version}'
+main: me.widewoods.customwands.CustomWands
+api-version: '1.20'
+commands:
+  wand:
+    description: Get wand
+    usage: /<command> <name> <power> or /<command>

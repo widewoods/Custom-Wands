@@ -1,0 +1,7 @@
+1. Setup new case, displayName, lore for new wand in WandMaker.java
+2. add new Effect to Effects enum
+3. create new Wand in CustomWands.java, setup Particles, etc.
+4. make new onPlayerUseWand case, new onSnowballHit case
+5. create actual effects in Wand class, for both block hit and entity hit
+
+Break in switch statements!!!!
