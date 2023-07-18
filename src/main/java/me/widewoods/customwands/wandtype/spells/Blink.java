@@ -10,6 +10,7 @@ import org.bukkit.util.Vector;
 public class Blink extends CastWand {
     public Blink(String name, float speed, int power, CustomWands pl) {
         super(name, speed, power, pl);
+        setPowerCoefficient(12);
     }
 
     @Override

@@ -13,6 +13,8 @@ public abstract class Wand {
     protected float particleSpeed;
     protected Player wandUser;
     protected int manaCost = 10;
+    protected int powerCoefficient = 1;
+    protected int manaCoefficient = 1;
 
     public Wand(String name, float speed, int power, CustomWands pl){
         this.setSpeed(speed);
@@ -22,7 +24,7 @@ public abstract class Wand {
     }
 
     public int setManaCost(int manaCost){
-        this.manaCost = manaCost;
+        this.manaCost = manaCost * this.manaCoefficient;
         return this.manaCost;
     }
     public Player setWandUser(Player user){
@@ -34,8 +36,16 @@ public abstract class Wand {
         return this.speed;
     }
     public int setPower(int power){
-        this.power = power;
+        this.power = power * this.powerCoefficient;
         return this.power;
+    }
+    public int setPowerCoefficient(int coefficient){
+        this.powerCoefficient = coefficient;
+        return coefficient;
+    }
+    public int setManaCoefficient(int coefficient){
+        this.manaCoefficient = coefficient;
+        return coefficient;
     }
 
     public void setParticle(Particle p, int pCount, float pSpeed){

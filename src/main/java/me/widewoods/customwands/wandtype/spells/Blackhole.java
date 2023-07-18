@@ -50,7 +50,7 @@ public class Blackhole extends ProjectileWand{
                         for(LivingEntity e:center.getLocation().getNearbyLivingEntities(power)){
                             if(!e.equals(user)){
                                 Vector dir = center.getLocation().toVector().subtract(e.getLocation().toVector());
-                                e.teleport(e.getLocation().add(dir.normalize().multiply(power*0.8)));
+                                e.setVelocity(dir.normalize());
                                 e.damage(0.5f);
                             }
                         }

@@ -10,6 +10,7 @@ public class Swap extends CastWand {
 
     public Swap(String name, float speed, int power, CustomWands pl) {
         super(name, speed, power, pl);
+        setPowerCoefficient(12);
     }
 
     @Override

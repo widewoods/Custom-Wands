@@ -22,42 +22,39 @@ public class Mana implements Listener {
     public Mana(CustomWands plugin){
         this.plugin = plugin;
     }
+    static ArrayList<UUID> players;
 
     public void runOnEnable(){
-        addPlayers();
+        players = addPlayers();
+        for(UUID uuid:players){
+            createManaBar(uuid);
+        }
         refreshMana();
-        createManaBar();
     }
 
     //On enable:
-    void addPlayers(){
+    ArrayList<UUID> addPlayers(){
         ArrayList<UUID> players = new ArrayList<>();
-        for(Player player: new ArrayList<>(plugin.getServer().getOnlinePlayers())){
-            players.add(player.getUniqueId());
-        }
         for(OfflinePlayer player: plugin.getServer().getOfflinePlayers()){
             players.add(player.getUniqueId());
+            Bukkit.getLogger().info(player.getName());
+            Bukkit.getLogger().info("Off");
         }
         for(UUID player: players){
             playerManaValue.put(player, 0);
         }
-        for(Map.Entry<UUID, Integer> set: playerManaValue.entrySet()){
-            if(Bukkit.getPlayer(set.getKey()) != null){
-                Bukkit.getLogger().info(Bukkit.getPlayer(set.getKey()).getName());
-                Bukkit.getLogger().info("add players successful");
-            }
-        }
-        Bukkit.getLogger().info("addPlayers end");
+        return players;
     }
 
-    void hideBossBar(){
-        for(Map.Entry<BossBar, Audience> set: viewers.entrySet()){
-            set.getValue().hideBossBar(set.getKey());
-            set.getKey().removeViewer(set.getValue());
-            viewers.remove(set.getKey());
+    void hideBossBar(UUID uuid){
+        if(Bukkit.getPlayer(uuid) != null){
+            viewers.get(uuid).removeViewer(Bukkit.getPlayer(uuid));
+            Bukkit.getPlayer(uuid).hideBossBar(viewers.get(uuid));
         }
     }
 
+    //Run only once
+    //Refreshes mana for all players, online and offline
     void refreshMana(){
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
@@ -73,26 +70,40 @@ public class Mana implements Listener {
         }, 0, 1);
     }
 
-    static HashMap<BossBar, Audience> viewers = new HashMap<>();
-    void createManaBar(){
-        for(Map.Entry<UUID, Integer> set: playerManaValue.entrySet()){
-            if(Bukkit.getPlayer(set.getKey()) != null){
-                Component bossBarText = Component.text("Mana")
+    static HashMap<UUID, BossBar> viewers = new HashMap<>();
+    void createManaBar(UUID uuid){
+//        for(Map.Entry<UUID, Integer> set: playerManaValue.entrySet()){
+//            if(Bukkit.getPlayer(set.getKey()) != null){
+//                Component bossBarText = Component.text("Mana")
+//                        .decorate(TextDecoration.BOLD)
+//                        .color(TextColor.color(0x86DC));
+//
+//
+//                BossBar manaBar = BossBar.bossBar(bossBarText, 0, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_10);
+//                manaBar.addViewer(Bukkit.getPlayer(set.getKey()));
+//                viewers.put(manaBar, Bukkit.getPlayer(set.getKey()));
+//
+//                Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        manaBar.progress(set.getValue()/100f);
+//                    }
+//                }, 0, 1);
+//            }
+        if(Bukkit.getPlayer(uuid) != null){
+            Component bossBarText = Component.text("Mana")
                         .decorate(TextDecoration.BOLD)
                         .color(TextColor.color(0x86DC));
+            BossBar manaBar = BossBar.bossBar(bossBarText, 0, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_10);
+                manaBar.addViewer(Bukkit.getPlayer(uuid));
+                viewers.put(uuid, manaBar);
 
-
-                BossBar manaBar = BossBar.bossBar(bossBarText, 0, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_10);
-                manaBar.addViewer(Bukkit.getPlayer(set.getKey()));
-                viewers.put(manaBar, Bukkit.getPlayer(set.getKey()));
-
-                Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        manaBar.progress(set.getValue()/100f);
+                        manaBar.progress(playerManaValue.get(uuid)/100f);
                     }
                 }, 0, 1);
-            }
         }
     }
 }

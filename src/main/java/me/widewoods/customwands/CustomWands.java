@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 
 public final class CustomWands extends JavaPlugin implements Listener {
@@ -62,7 +63,9 @@ public final class CustomWands extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        Mana.manaManager.hideBossBar();
+        for(UUID uuid: Mana.players){
+            Mana.manaManager.hideBossBar(uuid);
+        }
     }
 
     //들고 있는 아이템의 ItemMeta lore 값을 보고 알맞는 Wand 선택 후 발사
