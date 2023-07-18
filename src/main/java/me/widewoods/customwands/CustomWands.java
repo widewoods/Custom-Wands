@@ -36,6 +36,8 @@ public final class CustomWands extends JavaPlugin implements Listener {
     CastWand blink = new Blink( "Blink", 2f, 40, this);
     CastWand swap = new Swap("Swap", 2f, 100, this);
 
+    CastWand shunpo = new Shunpo("Shunpo", 2f, 10, this);
+
 
     public static EntityType[] mobs = Arrays.stream(EntityType.values())
             .filter(type -> type.getEntityClass() != null && Mob.class.isAssignableFrom(type.getEntityClass()))
@@ -73,11 +75,9 @@ public final class CustomWands extends JavaPlugin implements Listener {
     public void onPlayerUseWand(PlayerInteractEvent event){
         if(event.getItem() == null) return;
 
-        if(event.getItem().getType() != Material.STICK) return;
+        if(!event.getItem().getItemMeta().hasLore()) return;
 
         if(!event.getAction().isRightClick()) return;
-
-        if(!event.getItem().getItemMeta().hasLore()) return;
 
         Player player = event.getPlayer();
         String lore = PlainTextComponentSerializer.plainText().serialize(event.getItem().getItemMeta().lore().get(0));
@@ -92,6 +92,7 @@ public final class CustomWands extends JavaPlugin implements Listener {
             case "Swap" -> swap;
             case "Blackhole" -> blackhole;
             case "Erupting Earth" -> eruptingEarth;
+            case "Shunpo" -> shunpo;
             default -> null;
         };
 

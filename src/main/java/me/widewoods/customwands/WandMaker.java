@@ -3,6 +3,7 @@ package me.widewoods.customwands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,19 +24,19 @@ import java.util.Map;
 
 public class WandMaker implements CommandExecutor, TabExecutor {
 
-
-    static HashMap<String, String> spells = new HashMap<>();
+    static ArrayList<WandItem> wands = new ArrayList<>();
     static {
-        spells.put("damage", "Damage");
-        spells.put("explosion", "Explosion");
-        spells.put("transmute", "Transmute");
-        spells.put("lightning", "Lightning");
-        spells.put("stun", "Stun");
-        spells.put("dash", "Dash");
-        spells.put("blink", "Blink");
-        spells.put("swap", "Swap");
-        spells.put("blackhole", "Blackhole");
-        spells.put("eruptingearth", "Erupting Earth");
+        wands.add(new WandItem("damage", "Damage", Material.STICK));
+        wands.add(new WandItem("explosion", "Explosion", Material.STICK));
+        wands.add(new WandItem("transmute", "Transmute", Material.STICK));
+        wands.add(new WandItem("lightning", "Lightning", Material.STICK));
+        wands.add(new WandItem("stun", "Stun", Material.STICK));
+        wands.add(new WandItem("dash", "Dash", Material.STICK));
+        wands.add(new WandItem("blink", "Blink", Material.AMETHYST_SHARD));
+        wands.add(new WandItem("swap", "Swap", Material.STICK));
+        wands.add(new WandItem("blackhole", "Blackhole", Material.STICK));
+        wands.add(new WandItem("eruptingearth", "Erupting Earth", Material.STICK));
+        wands.add(new WandItem("shunpo", "Shunpo", Material.GOLDEN_SWORD));
     }
 
     @Override
@@ -43,18 +44,18 @@ public class WandMaker implements CommandExecutor, TabExecutor {
         if(commandSender instanceof Player){
             Player player = (Player) commandSender;
             if(strings.length == 0){
-                for(Map.Entry<String, String> set: spells.entrySet()){
-                    ItemStack wand = new ItemStack(Material.STICK);
+                for(WandItem wandItem: wands){
+                    ItemStack wand = new ItemStack(wandItem.wandMaterial);
                     ItemMeta wandMeta = wand.getItemMeta();
                     final Component displayName;
 
                     final ArrayList<Component> lore = new ArrayList<>();
-                    Component text = Component.text(set.getValue())
+                    Component text = Component.text(wandItem.displayName)
                             .decoration(TextDecoration.BOLD, true)
                             .decoration(TextDecoration.ITALIC, false)
                             .color(TextColor.color(0x9542f5));
 
-                    Component loreText = Component.text(set.getValue())
+                    Component loreText = Component.text(wandItem.displayName)
                             .decoration(TextDecoration.OBFUSCATED, true)
                             .decoration(TextDecoration.ITALIC, false)
                             .color(TextColor.color(0xF50100));;
@@ -74,24 +75,35 @@ public class WandMaker implements CommandExecutor, TabExecutor {
                 return false;
             }
 
-            ItemStack wand = new ItemStack(Material.STICK);
+            WandItem wandItem = null;
+            for(WandItem w: wands){
+                Bukkit.getLogger().info("iterating");
+                if(strings[0].equals(w.commandName)){
+                    wandItem = w;
+                    Bukkit.getLogger().info("set wand");
+                    break;
+                }
+            }
+            if(wandItem == null){
+                return false;
+            }
+
+            ItemStack wand = new ItemStack(wandItem.wandMaterial);
+
             ItemMeta wandMeta = wand.getItemMeta();
             final Component displayName;
             final ArrayList<Component> lore = new ArrayList<>();
             Component name = null;
             Component loreText = null;
-            if(spells.containsKey(strings[0])){
-                name = Component.text(spells.get(strings[0]))
+            name = Component.text(wandItem.displayName)
                         .decoration(TextDecoration.BOLD, true)
                         .decoration(TextDecoration.ITALIC, false)
                         .color(TextColor.color(0x9542f5));
-                loreText = Component.text(spells.get(strings[0]))
+            loreText = Component.text(wandItem.displayName)
                         .decoration(TextDecoration.OBFUSCATED, true)
                         .decoration(TextDecoration.ITALIC, false)
                         .color(TextColor.color(0xF50100));;
-            } else{
-                return false;
-            }
+
             displayName = name;
             lore.add(loreText);
             wandMeta.lore(lore);
@@ -114,8 +126,8 @@ public class WandMaker implements CommandExecutor, TabExecutor {
             return null;
         } else if(strings.length == 1){
             ArrayList<String> spellNames = new ArrayList<>();
-            for(Map.Entry<String, String> set: spells.entrySet()){
-                spellNames.add(set.getKey());
+            for(WandItem w: wands){
+                spellNames.add(w.commandName);
             }
             return spellNames;
         } else if(strings.length == 2){
@@ -124,5 +136,16 @@ public class WandMaker implements CommandExecutor, TabExecutor {
             return power;
         }
         return null;
+    }
+}
+
+class WandItem{
+    String commandName;
+    String displayName;
+    Material wandMaterial;
+    public WandItem(String commandName, String displayName, Material wandMaterial){
+        this.commandName = commandName;
+        this.displayName = displayName;
+        this.wandMaterial = wandMaterial;
     }
 }
