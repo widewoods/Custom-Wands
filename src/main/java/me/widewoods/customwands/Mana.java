@@ -37,8 +37,6 @@ public class Mana implements Listener {
         ArrayList<UUID> players = new ArrayList<>();
         for(OfflinePlayer player: plugin.getServer().getOfflinePlayers()){
             players.add(player.getUniqueId());
-            Bukkit.getLogger().info(player.getName());
-            Bukkit.getLogger().info("Off");
         }
         for(UUID player: players){
             playerManaValue.put(player, 0);

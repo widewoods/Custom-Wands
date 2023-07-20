@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Shunpo extends CastWand {
     public Shunpo(String name, float speed, int power, CustomWands pl) {
         super(name, speed, power, pl);
+        setManaCost(1);
     }
 
     @Override

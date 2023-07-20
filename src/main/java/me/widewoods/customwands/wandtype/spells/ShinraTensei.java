@@ -59,6 +59,7 @@ public class ShinraTensei extends ProjectileWand {
                             effectLoc.getWorld().playSound(effectLoc, Sound.ENTITY_WITHER_SHOOT, 0.2f, 0.5f);
                         }
                         for(LivingEntity e : center.getLocation().getNearbyLivingEntities(vectorSize * I)){
+                            if(e == wandUser) continue;
                             Vector dir = center.getLocation().toVector().subtract(e.getLocation().toVector());
                             if(Math.abs(dir.getY()) >= 6) continue;
                             e.setVelocity(dir.normalize().multiply(-2.4));
