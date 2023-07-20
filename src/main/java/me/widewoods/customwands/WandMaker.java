@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.WillNotClose;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,8 @@ public class WandMaker implements CommandExecutor, TabExecutor {
         wands.add(new WandItem("blackhole", "Blackhole", Material.STICK));
         wands.add(new WandItem("eruptingearth", "Erupting Earth", Material.STICK));
         wands.add(new WandItem("shunpo", "Shunpo", Material.GOLDEN_SWORD));
+        wands.add(new WandItem("phalanx", "Phalanx", Material.TRIDENT));
+        wands.add(new WandItem("shinratensei", "Shinra Tensei", Material.HEART_OF_THE_SEA));
     }
 
     @Override

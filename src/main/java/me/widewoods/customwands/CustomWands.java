@@ -32,11 +32,12 @@ public final class CustomWands extends JavaPlugin implements Listener {
     ProjectileWand stun = new Stun("Stun",  2f, 20, this);
     ProjectileWand blackhole = new Blackhole("Blackhole", 2f, 10, this);
     ProjectileWand eruptingEarth = new EruptingEarth("Erupting Earth", 2f, 10, this);
+    ProjectileWand shinraTensei = new ShinraTensei("Shinra Tensei", 5f, 10, this);
     CastWand dash = new Dash( "Dash", 2f, 2, this);
     CastWand blink = new Blink( "Blink", 2f, 40, this);
     CastWand swap = new Swap("Swap", 2f, 100, this);
-
     CastWand shunpo = new Shunpo("Shunpo", 2f, 10, this);
+    CastWand phalanx = new Phalanx("Phalanx", 2f, 10, this);
 
 
     public static EntityType[] mobs = Arrays.stream(EntityType.values())
@@ -93,6 +94,8 @@ public final class CustomWands extends JavaPlugin implements Listener {
             case "Blackhole" -> blackhole;
             case "Erupting Earth" -> eruptingEarth;
             case "Shunpo" -> shunpo;
+            case "Phalanx" -> phalanx;
+            case "Shinra Tensei" -> shinraTensei;
             default -> null;
         };
 
@@ -120,6 +123,7 @@ public final class CustomWands extends JavaPlugin implements Listener {
                 case "Lightning" -> lightning;
                 case "Stun" -> stun;
                 case "Erupting Earth" -> eruptingEarth;
+                case "Shinra Tensei" -> shinraTensei;
                 default -> null;
             };
             if(wand != null){
