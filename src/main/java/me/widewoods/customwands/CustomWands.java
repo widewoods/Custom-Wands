@@ -1,5 +1,6 @@
 package me.widewoods.customwands;
 
+import me.widewoods.customwands.listeners.AmaterasuListner;
 import me.widewoods.customwands.listeners.BlackholeListener;
 import me.widewoods.customwands.listeners.EruptingEarthListener;
 import me.widewoods.customwands.wandtype.CastWand;
@@ -17,7 +18,9 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.UUID;
 
 
@@ -38,7 +41,10 @@ public final class CustomWands extends JavaPlugin implements Listener {
     CastWand swap = new Swap("Swap", 2f, 100, this);
     CastWand shunpo = new Shunpo("Shunpo", 2f, 10, this);
     CastWand phalanx = new Phalanx("Phalanx", 2f, 10, this);
+    CastWand amaterasu = new Amaterasu("Amaterasu", 2f, 10, this);
+    CastWand vme = new VME("Vertical Manuevering Equipment", 2f, 10, this);
 
+    HashMap<UUID, ArrayList<Wand>> playerWands = new HashMap<>();
 
     public static EntityType[] mobs = Arrays.stream(EntityType.values())
             .filter(type -> type.getEntityClass() != null && Mob.class.isAssignableFrom(type.getEntityClass()))
@@ -51,6 +57,7 @@ public final class CustomWands extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new BlackholeListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new EruptingEarthListener(), this);
+        getServer().getPluginManager().registerEvents(new AmaterasuListner(), this);
 
         WandMaker wm = new WandMaker();
         this.getCommand("wand").setExecutor(wm);
@@ -60,6 +67,26 @@ public final class CustomWands extends JavaPlugin implements Listener {
         if(Mana.manaManager == null){
             Mana.manaManager  = new Mana(this);
             Mana.manaManager.runOnEnable();
+        }
+
+        for(OfflinePlayer p: getServer().getOfflinePlayers()){
+            ArrayList<Wand> wands = new ArrayList<>();
+            wands.add(new Explosion("Explosion", 2f, 10, this));
+            wands.add(new Damage("Damage",2f, 10, this));
+            wands.add(new Transmute( "Transmute", 2f, 0, this));
+            wands.add(new Lightning( "Lightning", 2f, 0, this));
+            wands.add(new Stun("Stun",  2f, 20, this));
+            wands.add(new Blackhole("Blackhole", 2f, 10, this));
+            wands.add(new EruptingEarth("Erupting Earth", 2f, 10, this));
+            wands.add(new ShinraTensei("Shinra Tensei", 5f, 10, this));
+            wands.add(new Dash( "Dash", 2f, 2, this));
+            wands.add(new Blink( "Blink", 2f, 40, this));
+            wands.add(new Swap("Swap", 2f, 100, this));
+            wands.add(new Shunpo("Shunpo", 2f, 10, this));
+            wands.add(new Phalanx("Phalanx", 2f, 10, this));
+            wands.add(new Amaterasu("Amaterasu", 2f, 10, this));
+            wands.add( new VME("Vertical Manuevering Equipment", 2f, 10, this));
+            playerWands.put(p.getUniqueId(), wands);
         }
     }
 
@@ -82,22 +109,14 @@ public final class CustomWands extends JavaPlugin implements Listener {
 
         Player player = event.getPlayer();
         String lore = PlainTextComponentSerializer.plainText().serialize(event.getItem().getItemMeta().lore().get(0));
-        Wand wand = switch (lore){
-            case "Damage" -> damage;
-            case "Explosion" -> explosion;
-            case "Transmute" -> transmute;
-            case "Lightning" -> lightning;
-            case "Stun" -> stun;
-            case "Dash" -> dash;
-            case "Blink" -> blink;
-            case "Swap" -> swap;
-            case "Blackhole" -> blackhole;
-            case "Erupting Earth" -> eruptingEarth;
-            case "Shunpo" -> shunpo;
-            case "Phalanx" -> phalanx;
-            case "Shinra Tensei" -> shinraTensei;
-            default -> null;
-        };
+        ArrayList<Wand> userWands = playerWands.get(player.getUniqueId());
+
+        Wand wand = null;
+        for(Wand w : userWands){
+            if(w.name.equals(lore)){
+                wand = w;
+            }
+        }
 
         if(wand != null){
             wand.setWandUser(player);
