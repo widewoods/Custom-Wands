@@ -133,7 +133,6 @@ public final class CustomWands extends JavaPlugin implements Listener {
         wands.add(new Blink( "Blink", 2f, 40, this));
         wands.add(new Swap("Swap", 2f, 100, this));
         wands.add(new Shunpo("Shunpo", 2f, 10, this));
-        wands.add(new Phalanx("Phalanx", 2f, 10, this));
         wands.add(new Amaterasu("Amaterasu", 2f, 10, this));
         wands.add(new VME("Vertical Manuevering Equipment", 2f, 10, this));
         wands.add(new ChibakuTensei("Chibaku Tensei", 2f, 10, this));

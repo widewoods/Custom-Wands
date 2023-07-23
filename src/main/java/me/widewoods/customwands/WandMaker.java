@@ -38,7 +38,6 @@ public class WandMaker implements CommandExecutor, TabExecutor {
         wands.add(new WandItem("blackhole", "Blackhole", Material.STICK));
         wands.add(new WandItem("eruptingearth", "Erupting Earth", Material.STICK));
         wands.add(new WandItem("shunpo", "Shunpo", Material.GOLDEN_SWORD));
-        wands.add(new WandItem("phalanx", "Phalanx", Material.TRIDENT));
         wands.add(new WandItem("shinratensei", "Shinra Tensei", Material.HEART_OF_THE_SEA));
         wands.add(new WandItem("amaterasu", "Amaterasu", Material.ENDER_EYE));
         wands.add(new WandItem("VME", "Vertical Manuevering Equipment", Material.TRIPWIRE_HOOK));

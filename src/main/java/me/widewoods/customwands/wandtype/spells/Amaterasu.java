@@ -28,7 +28,7 @@ public class Amaterasu extends CastWand {
                 Block b = wandUser.getTargetBlock(null, 50);
                 if(b != null){
                     for(Block surrounding : getSurroundingBlocks(b)){
-                        if(surrounding.getType() != Material.SOUL_FIRE && surrounding.getType() != Material.AIR){
+                        if(surrounding.getType() != Material.SOUL_FIRE && surrounding.getType() != Material.AIR && surrounding.getType() != Material.SOUL_SAND){
                             Block target = surrounding.getRelative(0, 1 ,0);
                             originalData.put(surrounding.getLocation(), surrounding.getBlockData());
                             surrounding.setType(Material.SOUL_SAND);

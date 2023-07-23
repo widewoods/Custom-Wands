@@ -2,9 +2,7 @@ package me.widewoods.customwands.wandtype.spells;
 
 import me.widewoods.customwands.CustomWands;
 import me.widewoods.customwands.wandtype.CastWand;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -22,6 +20,7 @@ public class VME extends CastWand {
 
 
     static HashMap<UUID, Location> latchLocation = new HashMap<>();
+    int runnable = 0;
     @Override
     public void castMagicEffect() {
         Block lookingAt = wandUser.getTargetBlock(null, this.power);
@@ -33,22 +32,26 @@ public class VME extends CastWand {
                 latchLocation.put(wandUser.getUniqueId(), targetLocation);
             }
 
-            new BukkitRunnable(){
+            this.runnable = new BukkitRunnable(){
+                float acceleration = 1.2f;
                 @Override
                 public void run(){
+                    wandUser.playSound(wandUser, Sound.ENTITY_FISHING_BOBBER_RETRIEVE, 1 ,acceleration/5f);
                     Vector dir = latchLocation.get(wandUser.getUniqueId()).toVector().subtract(wandUser.getLocation().toVector());
                     Vector line = dir.clone();
                     Location particleSpawnLocation = wandUser.getLocation();
                     for(int i=0; i<Math.floor(dir.clone().length()); i++){
                         particleSpawnLocation.add(line.normalize());
-                        wandUser.getWorld().spawnParticle(Particle.CLOUD, particleSpawnLocation, 1, 0, 0, 0, 0.1f);
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 255, 255), 0.5F);
+                        wandUser.getWorld().spawnParticle(Particle.REDSTONE, particleSpawnLocation, 1, 0, 0, 0, 0.1f, dustOptions);
                     }
-                    wandUser.setVelocity(dir.normalize().multiply(1.1f));
+                    wandUser.setVelocity(dir.normalize().multiply(acceleration));
                     if(wandUser.getLocation().toVector().distanceSquared(latchLocation.get(wandUser.getUniqueId()).toVector()) <= 5){
                         cancel();
                     }
+                    acceleration += 0.05f;
                 }
-            }.runTaskTimer(plugin, 0, 1);
+            }.runTaskTimer(plugin, 0, 1).getTaskId();
         }
     }
 }
