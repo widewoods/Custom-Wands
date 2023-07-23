@@ -42,6 +42,7 @@ public class WandMaker implements CommandExecutor, TabExecutor {
         wands.add(new WandItem("shinratensei", "Shinra Tensei", Material.HEART_OF_THE_SEA));
         wands.add(new WandItem("amaterasu", "Amaterasu", Material.ENDER_EYE));
         wands.add(new WandItem("VME", "Vertical Manuevering Equipment", Material.TRIPWIRE_HOOK));
+        wands.add(new WandItem("chibakutensei", "Chibaku Tensei", Material.FIRE_CHARGE));
     }
 
     @Override
@@ -82,10 +83,8 @@ public class WandMaker implements CommandExecutor, TabExecutor {
 
             WandItem wandItem = null;
             for(WandItem w: wands){
-                Bukkit.getLogger().info("iterating");
                 if(strings[0].equals(w.commandName)){
                     wandItem = w;
-                    Bukkit.getLogger().info("set wand");
                     break;
                 }
             }
